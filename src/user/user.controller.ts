@@ -6,21 +6,12 @@ import { UsuarioService } from './user.service';
 // Controlador recebe uma requisição e fornece uma resposta
 @Controller('user')
 export class UsuarioController {
+    //utiliza injeção de dependência para fornecer uma instância do serviço ao Controller
     constructor(private readonly usuarioService: UsuarioService) {}
 
     @Get()
-    getUsuarios(@Query('nome') nome: string) {
-        const usuarioService = new UsuarioService();
-
-        return usuarioService.findAllUsuarios(nome)
-        // Permite filtragem pelo nome na url
-        // if (nome) {
-        //     return usuarios.filter((usuario) =>
-        //         usuario.nome.toLowerCase().includes(nome.toLowerCase()),
-        //     );
-        // }
-
-        // return usuarios;
+    getUsuarios(@Query('nome') nome: string): unknown {
+        return this.usuarioService.findAllUsuarios(nome)
     }
     @Get(':id')
     getUsuariosById(@Param('id') id: string) {
