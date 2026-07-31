@@ -15,7 +15,7 @@ export class UsuarioService {
     
     private usuarios: Usuario[] = [
         { id: 1, nome: 'John Doe', email: 'john@example.com'},
-        { id: 2, nome: 'John Doe', email: 'john@example.com'},
+        { id: 2, nome: 'Maria', email: 'john@example.com'},
     ];
 
     findAllUsuarios(nome: string = ''){
@@ -23,6 +23,14 @@ export class UsuarioService {
 
         return this.usuarios.filter((usuario) =>
             usuario.nome.toLowerCase().includes(nome.toLowerCase()),
+        );
+    }
+
+    EncontrarUmUsuario(id: number){
+        this.logger.log('Encontrando um usuário');
+
+        return this.usuarios.find((usuario) =>
+            usuario.id === id
         );
     }
 }

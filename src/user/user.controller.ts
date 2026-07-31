@@ -15,7 +15,7 @@ export class UsuarioController {
     }
     @Get(':id')
     getUsuariosById(@Param('id') id: string) {
-        return {id, name: 'Johm Doe'};
+        return this.usuarioService.EncontrarUmUsuario(Number(id))
     }
     @Post()
     criarUsuario(@Body() criarUsuarioDto:criarUsuarioDto) {
