@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Param, Body, Post, Put } from '@nestjs/common';
+import { Controller, Get, Query, Param, Body, Post, Put, Delete } from '@nestjs/common';
 import { criarUsuarioDto } from './dto/criar-usuario.dto';
 import { atualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 import { UsuarioService } from './user.service';
@@ -7,7 +7,7 @@ import { UsuarioService } from './user.service';
 @Controller('user')
 export class UsuarioController {
     //utiliza injeção de dependência para fornecer uma instância do serviço ao Controller
-    constructor(private readonly usuarioService: UsuarioService) {}
+    constructor(private readonly usuarioService: UsuarioService) { }
 
     @Get()
     getUsuarios(@Query('nome') nome: string): unknown {
@@ -18,11 +18,20 @@ export class UsuarioController {
         return this.usuarioService.EncontrarUmUsuario(Number(id))
     }
     @Post()
-    criarUsuario(@Body() criarUsuarioDto:criarUsuarioDto) {
+    criarUsuario(@Body() criarUsuarioDto: criarUsuarioDto) {
         return this.usuarioService.CriarUsuario(criarUsuarioDto)
     }
     @Put(':id')
-    atualizarUsuario(@Param('id') id: number, @Body() AtualizarUsuarioDto:atualizarUsuarioDto) {
+    atualizarUsuario(@Param('id') id: number, @Body() AtualizarUsuarioDto: atualizarUsuarioDto) {
         return this.usuarioService.AtualizarUsuario(id, AtualizarUsuarioDto)
+    }
+    @Delete('id')
+    deletarUsuario(@Param('id') id: number) {
+        this.usuarioService.deletarUsuario(id)
+
+
+        return {
+            mensagem: 'Usuário removido com sucesso'
+        };
     }
 }

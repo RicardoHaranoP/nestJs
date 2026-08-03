@@ -13,14 +13,14 @@ export interface Usuario {
 @Injectable()
 export class UsuarioService {
     //Utiliza injeção de dependência para disponibilizar uma instância do serviço de log à classe
-    constructor(private readonly logger: LoggerService){}
-    
+    constructor(private readonly logger: LoggerService) { }
+
     private usuarios: Usuario[] = [
-        { id: 1, nome: 'John Doe', email: 'john@example.com'},
-        { id: 2, nome: 'Maria', email: 'john@example.com'},
+        { id: 1, nome: 'John Doe', email: 'john@example.com' },
+        { id: 2, nome: 'Maria', email: 'john@example.com' },
     ];
 
-    findAllUsuarios(nome: string = ''){
+    findAllUsuarios(nome: string = '') {
         this.logger.log('Encontrando todos os usuários');
 
         return this.usuarios.filter((usuario) =>
@@ -28,7 +28,7 @@ export class UsuarioService {
         );
     }
 
-    EncontrarUmUsuario(id: number){
+    EncontrarUmUsuario(id: number) {
         this.logger.log('Encontrando um usuário');
 
         return this.usuarios.find((usuario) =>
@@ -37,13 +37,13 @@ export class UsuarioService {
     }
 
     //Criando um usuário
-    CriarUsuario (criarUsuarioDto: criarUsuarioDto){
+    CriarUsuario(dto: criarUsuarioDto) {
         this.logger.log('Criando um usuário');
 
         const novoUsuario: Usuario = {
             id: this.usuarios.length + 1,
-            nome: criarUsuarioDto.nome,
-            email: criarUsuarioDto.email,
+            nome: dto.nome,
+            email: dto.email,
         }
 
         this.usuarios.push(novoUsuario)
@@ -51,7 +51,7 @@ export class UsuarioService {
     }
 
     //Atualizando um usuário
-    AtualizarUsuario (id: number, AtualizarUsuariodto: atualizarUsuarioDto) {
+    AtualizarUsuario(id: number, dto: atualizarUsuarioDto) {
         this.logger.log('Atualizando usuário')
 
         // procura usuário
@@ -63,15 +63,30 @@ export class UsuarioService {
         }
 
         // verifica campo nome, se nome não for undefined, então atualiza o nome
-        if (AtualizarUsuariodto.nome !== undefined) {
-            usuario.nome = AtualizarUsuariodto.nome
+        if (dto.nome !== undefined) {
+            usuario.nome = dto.nome
         }
 
         //verifica campo email, se email não for undefined, então atualiza o email
-        if (AtualizarUsuariodto.email !== undefined) {
-            usuario.email = AtualizarUsuariodto.email
+        if (dto.email !== undefined) {
+            usuario.email = dto.email
         }
 
         return usuario
+    }
+
+    deletarUsuario(id: number): void {
+        this.logger.log('Removendo usuário')
+        //findIndex retorna a posição do elemento no array
+        const indice = this.usuarios.findIndex(usuario => usuario.id === id);
+
+        // verifica se não encontrou
+        if (indice === -1) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+
+        //splice modifica o array, primeiro parâmetro é a posição, e o segundo quantos elementos serão removidos
+        this.usuarios.splice(indice, 1);
+
     }
 }
