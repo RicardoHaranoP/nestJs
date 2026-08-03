@@ -31,9 +31,16 @@ export class UsuarioService {
     EncontrarUmUsuario(id: number) {
         this.logger.log('Encontrando um usuário');
 
-        return this.usuarios.find((usuario) =>
+        const usuario = this.usuarios.find((usuario) =>
             usuario.id === id
         );
+
+        //verifica se tem usuário, se não tiver então lança uma exceção
+        if (!usuario) {
+            throw new NotFoundException('Usuário não encontrado')
+        }
+
+        return usuario;
     }
 
     //Criando um usuário
