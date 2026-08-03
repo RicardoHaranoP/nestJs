@@ -19,13 +19,10 @@ export class UsuarioController {
     }
     @Post()
     criarUsuario(@Body() criarUsuarioDto:criarUsuarioDto) {
-        return { data: criarUsuarioDto, mensagem: 'Usuário criado com sucesso!'};
+        return this.usuarioService.CriarUsuario(criarUsuarioDto)
     }
     @Put(':id')
-    atualizarUsuario(@Param('id') id: string, @Body() atualizarUsuarioDto:atualizarUsuarioDto) {
-        return { 
-            data: { id, ...atualizarUsuarioDto }, 
-            mensagem: 'Usuário atualizado com sucesso'
-        };
+    atualizarUsuario(@Param('id') id: number, @Body() AtualizarUsuarioDto:atualizarUsuarioDto) {
+        return this.usuarioService.AtualizarUsuario(id, AtualizarUsuarioDto)
     }
 }
