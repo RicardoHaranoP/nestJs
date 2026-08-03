@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Param, Body, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Query, Param, Body, Post, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { criarUsuarioDto } from './dto/criar-usuario.dto';
 import { atualizarUsuarioDto } from './dto/atualizar-usuario.dto';
 import { UsuarioService } from './user.service';
@@ -14,19 +14,19 @@ export class UsuarioController {
         return this.usuarioService.findAllUsuarios(nome)
     }
     @Get(':id')
-    getUsuariosById(@Param('id') id: string) {
-        return this.usuarioService.EncontrarUmUsuario(Number(id))
+    getUsuariosById(@Param('id', ParseIntPipe) id: number) {
+        return this.usuarioService.EncontrarUmUsuario(id)
     }
     @Post()
     criarUsuario(@Body() criarUsuarioDto: criarUsuarioDto) {
         return this.usuarioService.CriarUsuario(criarUsuarioDto)
     }
     @Put(':id')
-    atualizarUsuario(@Param('id') id: number, @Body() AtualizarUsuarioDto: atualizarUsuarioDto) {
+    atualizarUsuario(@Param('id', ParseIntPipe) id: number, @Body() AtualizarUsuarioDto: atualizarUsuarioDto) {
         return this.usuarioService.AtualizarUsuario(id, AtualizarUsuarioDto)
     }
     @Delete('id')
-    deletarUsuario(@Param('id') id: number) {
+    deletarUsuario(@Param('id', ParseIntPipe) id: number) {
         this.usuarioService.deletarUsuario(id)
 
 
